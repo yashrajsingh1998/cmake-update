@@ -1,4 +1,4 @@
 script:
-  - ./build.sh
+  - sh ./build.sh
   
   
