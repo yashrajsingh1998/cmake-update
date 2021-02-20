@@ -1,6 +1,4 @@
-language: cpp
-compiler: gcc
 script:
-  - sudo ./build.sh
+  - ./build.sh
   
   
