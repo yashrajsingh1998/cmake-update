@@ -1,5 +1,7 @@
 before_install:
   # Install a supported cmake version (>= 3.14)
+  - wget https://developer.download.nvidia.com/compute/cuda/10.2/Prod/local_installers/cuda_10.2.89_440.33.01_linux.run
+  - sudo sh cuda_10.2.89_440.33.01_linux.run
   - wget -O cmake.sh https://cmake.org/files/v3.14/cmake-3.14.1-Linux-x86_64.sh
   - sudo sh cmake.sh --skip-license --exclude-subdir --prefix=/usr/local
   - export PATH=/usr/local/bin:$PATH
