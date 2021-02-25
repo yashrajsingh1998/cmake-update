@@ -11,7 +11,7 @@ addons:
   apt:
     packages:
       - nvidia-common
-      - nvidia-cuda-toolkit=10.2.89-1
+      - nvidia-cuda-toolkit=10.2
       - nvidia-cuda-dev
       
       
