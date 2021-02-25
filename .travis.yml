@@ -1,14 +1,21 @@
+# matrix:
+#   include:
+#     - name: CUDA 10
+#       dist: focal
 matrix:
   include:
     - name: CUDA 10
+      env:
+      - CUDA=10.2.89-1
+      - CUDA_SHORT=10.2
+      - UBUNTU_VERSION=ubuntu2004
       dist: focal
-
-addons:
-  apt:
-    packages:
-      - nvidia-common
-      - nvidia-cuda-toolkit
-      - nvidia-cuda-dev
+# addons:///////////////addd
+#   apt:
+#     packages:
+#       - nvidia-common
+#       - nvidia-cuda-toolkit
+#       - nvidia-cuda-dev
       
 # env:
 #   global:
@@ -30,7 +37,20 @@ before_install:
 #   - sudo apt update
 #   - sudo add-apt-repository ppa:graphics-drivers/ppasudo apt-key adv --fetch-keys http://developer.download.nvidia.com/compute/cuda/repos/ubuntu1604/x86_64/7fa2af80.pubsudo bash -c 'echo "deb http://developer.download.nvidia.com/compute/cuda/repos/ubuntu1604/x86_64 /" > /etc/apt/sources.list.d/cuda.list'sudo bash -c 'echo "deb  http://developer.download.nvidia.com/compute/machine-learning/repos/ubuntu1604/x86_64 /" >  /etc/apt/sources.list.d/cuda_learn.list'
 #   - sudo apt update
-  - sudo apt install cuda-10.2-89-1
+  - INSTALLER=cuda-repo-${UBUNTU_VERSION}_${CUDA}_amd64.deb
+  - wget http://developer.download.nvidia.com/compute/cuda/repos/${UBUNTU_VERSION}/x86_64/${INSTALLER}
+  - sudo dpkg -i ${INSTALLER}
+  - wget https://developer.download.nvidia.com/compute/cuda/repos/${UBUNTU_VERSION}/x86_64/7fa2af80.pub
+  - sudo apt-key add 7fa2af80.pub
+  - sudo apt update -qq
+  - sudo apt install -y cuda-core-${CUDA_SHORT/./-} cuda-cudart-dev-${CUDA_SHORT/./-} cuda-cufft-dev-${CUDA_SHORT/./-}
+  - sudo apt clean
+  - CUDA_HOME=/usr/local/cuda-${CUDA_SHORT}
+  - LD_LIBRARY_PATH=${CUDA_HOME}/lib64:${LD_LIBRARY_PATH}
+  - PATH=${CUDA_HOME}/bin:${PATH}
+
+  
+#   - sudo apt install cuda-10.2-89-1
 #   - sudo apt install libcudnn7
 #   - echo "if [ -d “/usr/local/cuda-10.2/bin/” ]; then export PATH=/usr/local/cuda-10.2/bin${PATH:+:${PATH}} export LD_LIBRARY_PATH=/usr/local/cuda-10.1/lib64${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}} fi" | tee -a ~/.profile 
 
