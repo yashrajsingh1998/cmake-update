@@ -1,39 +1,31 @@
+dist: trusty
 addons:
   apt:
+    sources:
+      - hvr-ghc
     packages:
-      - nvidia-common
-      - nvidia-cuda-toolkit
-      - nvidia-cuda-dev
+      - alex-3.1.7
+      - happy-1.19.5
       
-      
+compiler:
+  - GHC-8.10.1  
 env:
-  global:
-    - CXXFLAGS="-Wall -Wextra -Werror"
-    - INSTALL_DIR=~/mylibs
-    - NVML_FILE=cuda_346.46_gdk_linux.run
-    - NVML_LINK=http://developer.download.nvidia.com/compute/cuda/7_0/Prod/local_installers/
+  # global:
   matrix:
-    - USE_NVML=1 USE_SM=sm_10
-    - USE_NVML=0 USE_SM=sm_20
-    
-    
+    - CUDA=10.2.89-1  
     
 before_install:
-
-#   - sudo apt-get install -qq nvidia-cuda-toolkit
-  - sudo apt-add-repository multiverse
-  - sudo apt-get update -qq
-  # nvcc 5.5: <= gcc 4.8
-#  - sudo apt-get install -qq gcc-4.8 g++-4.8
-#  - sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.8 60 --slave /usr/bin/g++ g++ /usr/bin/g++-4.8
-  - gcc --version && g++ --version
-  - sudo apt-get install -qq nvidia-cuda-toolkit
-  - sudo apt-get install -qq nvidia-cuda-dev
+  - export GHC=${CC:4}
+  - unset CC
+  - export PATH=/opt/alex/3.1.7/bin:/opt/happy/1.19.5/bin:$PATH
+  - export CUDA_INSTALL_EXTRA_LIBS=0
+  - source .travis/install-cuda-trusty.sh
+  - source .travis/install-stack.sh  
+  - echo "$(stack exec ghc -- --version) [$(stack exec ghc -- --print-project-git-commit-id 2> /dev/null || echo '?')]"
+  - stack --version
   - nvcc --version
-  - if [ $USE_NVML -eq 1 ]; then wget $NVML_LINK$NVML_FILE && chmod u+x $NVML_FILE && sudo ./$NVML_FILE --silent --installdir=/ ; fi
-  - if [ $USE_NVML -eq 1 ]; then export CMAKE_PREFIX_PATH=/usr/src/gdk/nvml/lib/ ; fi
-  - sudo find /usr/ -name nvml.h
-  - sudo find /usr/ -name nppdefs.h  
+  - sudo find /usr/ -name nppdefs.h
+
   
 #   - sudo apt-get install -qq nvidia-cuda-dev
 #   - nvcc --version
