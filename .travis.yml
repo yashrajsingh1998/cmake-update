@@ -1,10 +1,6 @@
 matrix:
   include:
     - name: CUDA 10
-      env:
-      - CUDA=10.2.89-1
-      - CUDA_SHORT=10.2
-      - UBUNTU_VERSION=ubuntu1804
       dist: focal
 
 # addons:
@@ -13,8 +9,21 @@ matrix:
 #       - nvidia-common
 #       - nvidia-cuda-toolkit=10.1.243-1
 #       - nvidia-cuda-dev
-      
-      
+env:
+  global:
+    - JULIA_DEBUG=CUDAapi
+
+matrix:
+  include:
+    - env: CUDA=10.2
+      os: linux      
+addons:
+  homebrew:
+    packages:
+    - bash
+    - p7zip
+    - gnu-tar
+    
 before_install:
  
 #   - sudo apt update
@@ -23,10 +32,13 @@ before_install:
 #   - http://developer.download.nvidia.com/compute/cuda/repos/ubuntu1604/x86_64 /" > /etc/apt/sources.list.d/cuda.list'sudo bash -c 'echo "deb 
 #   - http://developer.download.nvidia.com/compute/machine-learning/repos/ubuntu1604/x86_64 /" > 
 #   - /etc/apt/sources.list.d/cuda_learn.list'
-  - sudo apt update
-  - sudo apt install cuda-10–2
-  - sudo apt install libcudnn7
+#   - sudo apt update
+#   - sudo apt install cuda-10–2
+#   - sudo apt install libcudnn7
+  - if [[ $TRAVIS_OS_NAME == "linux" ]];   then                   ./.travis.linux;   fi
+  - if [[ $TRAVIS_OS_NAME == "osx" ]];     then /usr/local/bin/bash .travis.osx;     fi
   - nvcc --version
+  
   - sudo find /usr/ -name nppdefs.h
 
   
