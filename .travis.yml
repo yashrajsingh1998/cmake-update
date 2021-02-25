@@ -1,7 +1,7 @@
-matrix:
-  include:
-    - name: CUDA 10
-      dist: focal
+# matrix:
+#   include:
+#     - name: CUDA 10
+#       dist: focal
 
 # addons:
 #   apt:
