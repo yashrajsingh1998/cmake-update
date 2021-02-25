@@ -49,6 +49,7 @@ before_install:
   - LD_LIBRARY_PATH=${CUDA_HOME}/lib64:${LD_LIBRARY_PATH}
   - PATH=${CUDA_HOME}/bin:${PATH}
   - ls /usr/local/cuda-10.2/bin
+  - ls /usr/local/cuda-10.2
 
   
 #   - sudo apt install cuda-10.2-89-1
