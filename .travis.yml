@@ -50,6 +50,7 @@ before_install:
   - PATH=${CUDA_HOME}/bin:${PATH}
   - ls /usr/local/cuda-10.2/bin
   - ls /usr/local/cuda-10.2
+  - - ls /usr/local/cuda-10.2/include
 
   
 #   - sudo apt install cuda-10.2-89-1
