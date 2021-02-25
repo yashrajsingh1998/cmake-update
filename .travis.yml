@@ -8,7 +8,7 @@ matrix:
       env:
       - CUDA=10.2.89-1
       - CUDA_SHORT=10.2
-      - UBUNTU_VERSION=ubuntu2004
+      - UBUNTU_VERSION=ubuntu1804
       dist: bionic
 # addons:///////////////addd
 #   apt:
