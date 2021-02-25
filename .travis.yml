@@ -1,28 +1,22 @@
-dist: trusty
+matrix:
+  include:
+    - name: CUDA 10
+      env:
+      - CUDA=10.2.89-1
+      - CUDA_SHORT=10.2
+      - UBUNTU_VERSION=ubuntu1804
+      dist: Bionic
+
 addons:
   apt:
-    sources:
-      - hvr-ghc
     packages:
-      - alex-3.1.7
-      - happy-1.19.5
+      - nvidia-common
+      - nvidia-cuda-toolkit=10.2.89-1
+      - nvidia-cuda-dev
       
-compiler:
-  - GHC-8.10.1  
-env:
-  # global:
-  matrix:
-    - CUDA=10.2.89-1  
-    
+      
 before_install:
-  - export GHC=${CC:4}
-  - unset CC
-  - export PATH=/opt/alex/3.1.7/bin:/opt/happy/1.19.5/bin:$PATH
-  - export CUDA_INSTALL_EXTRA_LIBS=0
-  - source .travis/install-cuda-trusty.sh
-  - source .travis/install-stack.sh  
-  - echo "$(stack exec ghc -- --version) [$(stack exec ghc -- --print-project-git-commit-id 2> /dev/null || echo '?')]"
-  - stack --version
+
   - nvcc --version
   - sudo find /usr/ -name nppdefs.h
 
